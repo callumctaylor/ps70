@@ -28,25 +28,48 @@
 
 <p class="margin">   </p>
 <div class="center-row">
-  <img src="./about-me-placeholder.jpg" alt="placeholder for you about me image">
+  <img src="./about-me-placeholder.jpg"
+  style="
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 380px; /* Adjust this value as needed */
+    object-fit: cover; /* Crops the image to fit while maintaining aspect ratio */
+    width: 100%; /* Ensures full width inside the column */
+  "
+  alt="placeholder for you about me image">
   <p id="aboutme">
-    This is an about me! Here you can talking about the dorm you live in, what year you are, and what are you interested in.
+    Hello! My name is Callum and I am a Senior at Harvard College. I am concentrating in Electrical Engineering and I am interested in anything to do with building electronics, specifically stuff with cows. I am excited to learn more about different fabrication methods I can use for building new products and how I can use it to challenge myself to come up with new solutions in the AgTech space.
   </p>
 </div>
 <br></br>
+I've loved building Arduino boards since I was about 16 on my farm. I've added some photos from these days—was definitely a nerd. Here are also some things I built over the years.
 
-Hello there is more text here, feel free to go into more detail about stuff you are interested in as well. As well as place more
-images if you are interested in those things
-<br></br>
-<img src="./generic-placeholder-image.jpg" alt="generic placeholder image">
-
-<br></br>
-Maybe even add a video?
+<div class="container text-center mt-4">
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <img src="./generic-placeholder-image.jpg" class="img-fluid rounded shadow" alt="Soldering PCB">
+    </div>
+    <div class="col-md-6 mb-3">
+      <img src="./about_image_1.jpg" class="img-fluid rounded shadow" alt="3D Printed Drone">
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <img src="./about_image_2.jpg" class="img-fluid rounded shadow" alt="IoT Device">
+    </div>
+    <div class="col-md-6 mb-3">
+      <img src="./about_image_3.jpg" class="img-fluid rounded shadow" alt="Assembling PCBs">
+    </div>
+  </div>
+</div>
+<!-- Maybe even add a video?
 <br></br>
 
 <video width="640" height="480" controls>
   <source src="temp-video.mp4" type="video/mp4">
-</video>
+</video> -->
 
 
 </div>

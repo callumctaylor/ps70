@@ -104,3 +104,14 @@ code {
 #aboutme {
   padding: 20px;
 }
+
+.fixed-height-img {
+  /* center the image veritcally  */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 280px; /* Adjust this value as needed */
+  object-fit: cover; /* Crops the image to fit while maintaining aspect ratio */
+  width: 100%; /* Ensures full width inside the column */
+
+}
