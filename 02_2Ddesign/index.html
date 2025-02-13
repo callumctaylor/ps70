@@ -1,55 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
-
-
-<nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">PS70 Fall 2024</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
-
+<head>
+    <title>PS70: Intro to Digital Fabrication</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./style.css" rel="stylesheet">
+    <style>
+        .hover-effect {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .hover-effect:hover {
+            transform: scale(1.05);
+        }
+        body {
+            background-color: #f8f9fa;
+        }
+        .btn-outline-dark:hover {
+            background-color: #343a40;
+            color: #fff;
+        }
+        .fixed-height-img {
+            height: 150px;
+            object-fit: cover;
+            width: 100%;
+        }
+        /* set paragraph <p> to be left */
+        p {
+            text-align: left;
+        }
+        .container {
+            max-width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+        }
+    </style>
+</head>
 <body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin">   </p>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+            <h2 class="nav-title text-light">PS70 Fall 2024</h2>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link text-light" href="./index.html">Home</a>
+                <a class="nav-link text-light" href="./about.html">About</a>
+                <a class="nav-link text-light" href="./13_finalproject/index.html">Final Project</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container text-center my-5">
+        <h1>My Fabrication Blog</h1>
+        <h2>Creating My Box</h2>
+        <p>Embarking on the journey to design and assemble a custom box was both challenging and rewarding. Utilizing Fusion 360, I began by sketching the box's dimensions, ensuring to define parameters for length, width, height, and material thickness. This parametric approach allowed for easy adjustments and ensured precision in the design.</p>
+        <p>To achieve sturdy joints, I incorporated finger joints into the design. These interlocking tabs are essential for laser-cut assemblies, providing both strength and alignment. I referred to tutorials such as "Finger Joint Box for Laser Cutting Fusion 360 Tutorial" to guide me through the process.</p>
+        <p>Before proceeding to the final cut, I created several smaller test versions of the box. These prototypes were invaluable in identifying potential issues and allowed me to fine-tune the design. An added benefit was that these mini boxes now serve as handy containers for screws and other small components.</p>
+        <p>For the final design, I decided to add handles to enhance portability. Switching to Rhino, I crafted ergonomic handle cutouts, drawing inspiration from existing designs. Aligning these handles with the box's sides presented challenges, but through iterative adjustments and careful measurement, I achieved a satisfactory alignment.</p>
+        <p>With the design finalized, I exported the sketches and proceeded to the lab's laser cutters. The precision of the laser ensured that each piece fit together seamlessly during assembly. The experience underscored the importance of prototyping and the value of combining different software tools to achieve the desired outcome.</p>
+        <div class="row">
+            <div class="col-md-6"><img src="fingerbox_outline_fusion.png" alt="First test of the box"></div>
+            <div class="col-md-6"><img src="box2.JPG" alt="Second test of the box"></div>
+            <div class="col-md-6"><img src="box3.JPG" alt="Third test of the box"></div>
+            <div class="col-md-6"><img src="box4.JPG" alt="Final assembled box"></div>
+        </div>
 
-<h3>Week 2: 2D Design & Cutting</h3>
+        <h2>Fusion 360 Models Tutorials</h2>
+        <p>While I possess a solid foundation in Fusion 360, I recognized the need to expand my skills in specific areas. To this end, I explored tutorials focusing on form creation and rendering techniques.</p>
+        <p>The "Introduction to Forms in Fusion 360" tutorial provided insights into creating complex, easily manipulable shapes using the Form tool. This approach allows for more organic and freeform designs, which is a departure from the more rigid parametric modeling I was accustomed to.</p>
+        <p>Additionally, the tutorial "How to Get Realistic Renderings in Fusion 360" delved into rendering techniques, teaching how to apply materials, set up lighting, and adjust environment settings to produce photorealistic images of models. This skill is particularly useful for presenting designs in a polished and professional manner.</p>
+        <p>These tutorials not only broadened my understanding of Fusion 360's capabilities but also equipped me with the tools to enhance the aesthetics and presentation quality of my designs.</p>
+        <p>Here are some helpful tutorials that I found useful:</p>
+        <ul class="list-group">
+            <li class="list-group-item">
+          <a href="https://www.youtube.com/watch?v=SYLJyOuDKmo" class="text-decoration-none">Finger Joint Box for Laser Cutting Fusion 360 Tutorial</a>
+            </li>
+            <li class="list-group-item">
+          <a href="https://www.youtube.com/watch?v=sejMq84YREs" class="text-decoration-none">Introduction to Forms in Fusion 360</a>
+            </li>
+        </ul>
+      </br>
+        
+        
+        <h2>Modeling a Hair Comb</h2>
+        <p>Applying the knowledge gained from the tutorials, I set out to model a hair comb that was on my desk. The goal was to create a design that was both functional and ergonomic.</p>
+        <p>I began by sketching the comb's profile, using splines to achieve smooth, curved lines that would fit comfortably in hand. The teeth of the comb were created using a pattern feature, ensuring uniform spacing and size.</p>
+        <p>To enhance the design, I utilized the Form tool to adjust the curvature of the handle, making it more ergonomic. This allowed for subtle adjustments that improved the overall feel of the comb.</p>
+        <p>Once the modeling was complete, I applied materials and rendered the comb to visualize the final product. The rendering techniques learned previously were instrumental in showcasing the design's features and aesthetics effectively.</p>
+        <div class="row">
+            <div class="col-md-6"><img src="fusion_hairbrush.png" alt="Fusion 360 hair comb model"></div>
+            <div class="col-md-6"><img src="hairbrush_alpha.png" alt="Rendered hair comb"></div>
+        </div>
+        
+        <h2>Creating a Case for My Final Project (Livestock Virtual Fencing Collar)</h2>
+        <p>In preparation for my final project—a livestock virtual fencing collar—I focused on designing a suitable case to house the electronic components.</p>
+        <p>I began by measuring the test PCBs I had fabricated earlier, ensuring that the case dimensions would accommodate them precisely. Although I misplaced the physical solar panels, I sourced their dimensions online and modeled them in Fusion 360 to ensure a proper fit within the case.</p>
+        <p>The design challenge was to create a case that could flex around a cow's neck. To achieve this, I proposed using TPU (Thermoplastic Polyurethane) material for its flexibility and durability. The case design included a flexible middle section, allowing it to conform comfortably to the animal's neck.</p>
+        <p>I created both a flexed version and a flat version of the case in Fusion 360. The flexed version involved using splines and the Form tool to simulate the bending of the material, which presented challenges such as maintaining uniform thickness and avoiding distortion. These issues required iterative adjustments and problem-solving within Fusion 360.</p>
+        <p>After finalizing the design, I applied appropriate materials and rendered the case to visualize the final product. The rendering provided a clear representation of how the case would look and function, aiding in the evaluation and presentation of the design.</p>
+       
+        <div class="row">
+            <div class="col-md-6"><img src="AgMuster_Case1_alpha.png" alt="Case design version 1"></div>
+            <div class="col-md-6"><img src="AgMuster_Case2_alpha.png" alt="Case design version 2"></div>
+            <div class="col-md-6"><img src="AgMuster_Case3_alpha.png" alt="Case design version 3"></div>
+            <div class="col-md-6"><img src="AgMuster_Case4_joint.png" alt="Joint details of the final case"></div>
+        </div>
+    </div>
 
-<p class="margin">   </p>
-<div class="flexrow">
-  <a id="btn" href="./temp.zip" download>Test Download Button
-  </a>
-</div>
-<p class="margin">   </p>
+    <div class="container text-center my-5">
+      <h2>Download All Files</h2>
+      <p>You can download all the files used in this project from the following link:</p>
+      <a href="https://drive.google.com/drive/folders/1q0W6f5pEPUXnhtSwI23tpnW71aMh6siv?usp=sharing" class="btn btn-outline-dark" target="_blank">Download Files</a>
+    </div>
 
-<h4>Assignment 1: Make a Box</h4>
-
-
-
-<h4>Assignment 2: Fusion 360 Tutorial</h4>
-
-
-<h4>Assignment 3: Fusion Modeling</h4>
-
-
-
-
-
-</div>
-</xmp>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>
