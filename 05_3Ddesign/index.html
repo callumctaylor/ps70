@@ -1,38 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
+<head>
+  <title>PS70: Intro to Digital Fabrication</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="./style.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/STLLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+  <style>
+    .hover-effect {
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
 
+    .hover-effect:hover {
+      transform: scale(1.05);
+    }
 
-<nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">PS70 Fall 2024</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .btn-outline-dark:hover {
+      background-color: #343a40;
+      color: #fff;
+    }
+
+    p {
+      text-align: left;
+    }
+
+    .container {
+      max-width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 400px;
+      height: auto;
+      display: block;
+      margin: 10px auto;
+    }
+
+    #stlViewer {
+      width: 150px;
+      height: 500px;
+      background-color: white;
+    }
+  </style>
+</head>
 
 <body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin">   </p>
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid">
+      <h2 class="nav-title text-light">PS70 Fall 2024</h2>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link text-light" href="../index.html">Home</a>
+        <a class="nav-link text-light" href="../about.html">About</a>
+        <a class="nav-link text-light" href="../13_finalproject/index.html">Final Project</a>
+      </div>
+    </div>
+  </nav>
 
-<h3>Week 5: 3D Design & Printing</h3>
+  <div class="container text-center my-5">
+    <h1>My Fabrication Blog</h1>
+    <h2>3D Modelling</h2>
+    <p>To assist with my final project, I first worked on the electrode contact methods to get through the animal’s coat
+      and connect with the skin. I designed these in Fusion 360, using small 1mm pins to minimize the surface area
+      required to get through the coat. Rather than having to do a whole bunch of individual pins, I used the pattern
+      functionality to duplicate the pins across the board. It is extremely difficult to solder anything to a 3D print
+      since it will just melt, so instead I created a small pin in the side where the plug can snugly into the
+      electrode. I did some FDM tests of different pin styles, concluding that 1mm pins worked best in penetrating hair.
+    </p>
 
-<h4>Assignment: Model and 3D print something</h4>
+    <p>The second model I worked on was for a project to create a 1:1 cow head and neck that would allow me to test the
+      collar fit on the animal. Since the geometry mapping of a cow is difficult and I don’t have a lot of access to
+      one, I found online a free model that is a good starting point. This model was the entire body of the animal, so I
+      used Prusa slicer to split the cow from the neck up and I printed a smaller scaler version on the print bed to
+      check the quality. </p>
+
+    <div class="row">
+      <div class="col-md-6"> <img src="sla_printer.jpg" alt="SLA printed bristles">
+      </div>
+      <div class="col-md-6"> <img src="sla_printing.jpg" alt="SLA printed bristles">
+      </div>
+      <div class="col-md-12">
+        <div id="stlViewer"></div>
+      </div>
+    </div>
 
 
-</div>
-</xmp>
+    <h2>3D Printing</h2>
+    <p>Not content with the results from FDM printing the 1mm electrodes, which often broken easily and had a lot of
+      stringing), I decided to try SLA printing to get high resolution quality. Kassia was a huge help in learning how
+      to use the SLA print. It was a lot more work than an FDM in the post processing, however, the resolution was
+      fantastic and far superior to FMD printing. With Kassia’s help, I attempted both rigid and flexible resin
+      prints.
+      I’ll have to test them on a cow, but I believe the flexible SLA prints are too soft and won’t push through the
+      coat of the animal. I coated these SLA prints with a nickel spray-paint, so that they will be conductive.
+      Testing
+      them with a slight amount of electrode gel, it works extremely well.</p>
+    <p>The print for the cow worked extremely well and the cow looks fantastic. The next steps I will do will be to
+      cut
+      this up many more times, look at using dovetail connectors to connect the head together, and then print these
+      individual sections on FDM printers. I will explore JLC PCB for these components, but the shipping cost will
+      probably not be worth it (a quick quote looks like it’s $450 to ship).</p>
+
+    <div class="row">
+      <div class="col-md-6"> <img src="sla_bristles.jpg" alt="SLA printed bristles">
+      </div>
+      <div class="col-md-6"> <img src="sla_resin_post_process.JPG" alt="Post-processing SLA prints"></div>
+      <div class="col-md-6"> <img src="cow_on_bed.JPG" alt="Cow model on print bed"> </div>
+    </div>
+
+
+    <h2>3D Scanning</h2>
+    <p>I tried scanning a bunch of different objects, including my PCBs, but had a lot of issues with the black
+      components not being picked up. I decided to try the tube of hydrogel I have with me since it has interesting
+      contours. It was pretty difficult without the stand to reduce the noise, but two fairly good scans. I had to
+      do a
+      lot of post processing editing and because of the uniformity of the cap I had issues lining up the two scans
+      together. It created a pretty wonky output and the bottom half of the STL didn’t have much to it. In future, I
+      would love to try 3D scan a cow if possible!</p>
+    <div class="row">
+      <div class="col-md-6"><img src="tube_bed_1.JPG" alt="Hydrogel tube scan on bed"> </div>
+      <div class="col-md-6"><img src="tube_mesh_joining.JPG" alt="Merging scan data"></div>
+    </div>
+
+    <h2>Next Steps</h2>
+    <p>Next, I will segment the cow model for better printing, refine the electrode design, and consider alternative
+      manufacturing techniques to improve durability.</p>
+    <div class="row">
+      <div class="col-md-12"><img src="electrode_assembled.JPG" alt="Hydrogel tube scan on bed"> </div>
+    </div>
+  </div>
+
+  <script>
+    let scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xffffff);
+
+    let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    let renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth * 0.8, 500);
+    document.getElementById("stlViewer").appendChild(renderer.domElement);
+
+    let light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(5, 5, 5).normalize();
+    scene.add(light);
+
+    let loader = new THREE.STLLoader();
+    loader.load("cow_full.stl", function (geometry) {
+      let material = new THREE.MeshStandardMaterial({ color: 0x777777, metalness: 0.1, roughness: 0.6 });
+      let mesh = new THREE.Mesh(geometry, material);
+      scene.add(mesh);
+      let bbox = new THREE.Box3().setFromObject(mesh);
+      let center = bbox.getCenter(new THREE.Vector3());
+      mesh.position.sub(center);
+    });
+
+    camera.position.z = 150;
+    let controls = new THREE.OrbitControls(camera, renderer.domElement);
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
 
 </html>
