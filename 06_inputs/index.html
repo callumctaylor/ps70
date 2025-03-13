@@ -1,39 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
+<head>
+  <title>PS70: Intro to Digital Fabrication - Week 6</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="./style.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/STLLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+  <style>
+    .hover-effect {
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
 
+    .hover-effect:hover {
+      transform: scale(1.05);
+    }
 
-<nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">PS70 Fall 2024</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .btn-outline-dark:hover {
+      background-color: #343a40;
+      color: #fff;
+    }
+
+    p {
+      text-align: left;
+    }
+
+    .container {
+      max-width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 400px;
+      height: auto;
+      display: block;
+      margin: 10px auto;
+    }
+
+    video {
+      max-width: 100%;
+      max-height: 400px;
+      height: auto;
+      display: block;
+      margin: 10px auto;
+    }
+  </style>
+</head>
 
 <body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin">   </p>
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid">
+      <h2 class="nav-title text-light">PS70 Fall 2024</h2>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link text-light" href="../index.html">Home</a>
+        <a class="nav-link text-light" href="../about.html">About</a>
+        <a class="nav-link text-light" href="../13_finalproject/index.html">Final Project</a>
+      </div>
+    </div>
+  </nav>
 
-<h3>Week 6: Electronic Inputs</h3>
+  <div class="container text-center my-5">
+    <h1>Week 6: Capacitive Sensor, Accelerometer, & CNC Project</h1>
 
-<h4>Assignment 1: Capactive Sensor<h4>
+    <h2>Capacitive Sensor</h2>
+    <p>For this week, I decided to build a capacitive soil moisture sensor. I created two copper strips that connects to
+      the EPS32 directly. The ESP32 then generates a square wave output to one side of the capacitor and we use an
+      analog input on the other to detect voltage. This creates process creates an electric field between the two plates
+      and the dielectric is the space between. I’ve attached an example capacitive moisture sensor that does a similar
+      thing, but uses a 555 timer to generate the square wave output.
+    </p>
+    <p>
+      To test the soil moisture sensor, I created a test cup that consisted of sand and then poured water in whilst
+      mapping the values using serial plotter. The values I got where pretty good. To see the minimum and maximum I
+      plotted a high and low range value – previously the coded was jumping around along the y-axis too much. After
+      pouring in the water, I saw the values shoot up since the water changes the permittivity of the dielectric (the
+      sand). It quickly levelled off and the value became saturated. In future I would like to find ways to increase the
+      range of what we can measure (not saturate so quickly). Although the y-axis value is meaningless, we can see what
+      the capacitance looks like when it is dry and wet and then use those values to roughly calibrate the soil
+      moisture.
+    </p>
 
-<h4>Assignment 2: [Use + Calibrate Another Sensor]</h4>
 
-</div>
-</xmp>
+
+    <div class="row">
+      <div class="col-md-6"> <img src="cap_circuit_example.jpg" alt="Capacitive Circuit Example"></div>
+      <div class="col-md-6"> <img src="soilmoisture_wiring.jpg" alt="Soil Moisture Wiring"></div>
+      <div class="col-md-6"> <img src="soilmoisture_graph.jpg" alt="Soil Moisture Graph"></div>
+      <!-- add the video soilmoisture_pour_video.mp4 -->
+      <div class="col-md-6">
+        <video controls>
+          <source src="soilmoisture_pour_video.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+
+    <h2>Accelerometer Sensor</h2>
+    <p>To help with my final project, I started testing with some accelerometer sensors. To make things difficult for
+      myself (don’t know why), I decided to try using the Nordic chips to test the accelerometer since I want to add one
+      to the livestock collars. I started by using a ‘Feather nRF9160’ board, however, I had so many thread errors I
+      couldn’t find a fix. I then used the nRF53 thingy that has an IMU (accelerometer & gyroscope) and then also a
+      digital compass / magnometer (to track the cow’s direction). This gave me a good output and I could print the
+      values out. Since I wasn’t using Arduino’s environment but rather Zephyr’s I couldn’t map these values to a graph.
+    </p>
+
+    <p>In future I’ll have these values output to a server and I will be able to visualize them online. I’ve adding the
+      schematics of the magnometer and IMU with the nRF9160 chip.</p>
+
+    <div class="row">
+      <div class="col-md-6"> <img src="imu_output.jpg" alt="IMU Output"></div>
+      <div class="col-md-6"> <img src="magnometer_output.jpg" alt="Magnetometer Output"></div>
+      <div class="col-md-6"> <img src="nrf53_wiring.jpg" alt="nRF53 Wiring"></div>
+      <div class="col-md-6"> <img src="nrf53_tilt.jpg" alt="nRF53 Tilt Detection"></div>
+    </div>
+
+    <h2>CNC Project</h2>
+    <p>For the CNC project, I first wanted to put together a Connect Four (Four in a Row) board and use the CNC to cut
+      out all the holes. This became way too complex to put together since I didn’t know the limitations of the CNC
+      machine. Instead, I decided to build a chess board and use the CNC for milling out the board so that it becomes
+      3D.</p>
+
+    <p>Interested to see how it turns out!</p>
+
+    <div class="row">
+      <div class="col-md-6"> <img src="connect_four_sketch.jpg" alt="Connect Four Sketch"></div>
+      <div class="col-md-6"> <img src="chess_board_3d.jpg" alt="3D Chess Board"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
 
 </html>
