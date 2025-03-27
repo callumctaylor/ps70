@@ -1,40 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
+<head>
+  <title>PS70: Intro to Digital Fabrication - Week 7</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="./style.css" rel="stylesheet">
+  <style>
+    .hover-effect {
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
 
+    .hover-effect:hover {
+      transform: scale(1.05);
+    }
 
-<nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">PS70 Fall 2024</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .btn-outline-dark:hover {
+      background-color: #343a40;
+      color: #fff;
+    }
+
+    p {
+      text-align: left;
+    }
+
+    .container {
+      max-width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 400px;
+      height: auto;
+      display: block;
+      margin: 10px auto;
+    }
+
+    video {
+      max-width: 100%;
+      max-height: 400px;
+      height: auto;
+      display: block;
+      margin: 10px auto;
+    }
+  </style>
+</head>
 
 <body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin">   </p>
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid">
+      <h2 class="nav-title text-light">PS70 Fall 2024</h2>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link text-light" href="../index.html">Home</a>
+        <a class="nav-link text-light" href="../about.html">About</a>
+        <a class="nav-link text-light" href="../13_finalproject/index.html">Final Project</a>
+      </div>
+    </div>
+  </nav>
 
-<h3>Week 7: Electronic Outputs</h3>
+  <div class="container text-center my-5">
+    <h1>Week 7: MVP Assignment</h1>
+
+    <p>For my MVP I wanted to test the core of my product which is the muscle stimulation technology and how it
+      interacts with the animal. For this MVP, there were a large number of elements of the product I had to develop.
+      These elements are the casing of the device, conductive electrodes, the collar, the muscle stimulation circuit,
+      and the PCB to connect the microcontroller (MCU) and other circuits.</p>
+
+    <h2>Conductive Electrodes</h2>
+    <p>One of the core elements of the muscle stimulation device is having electrodes that maintain good contact on the
+      skin and penetrates the hair of the cow. This was a difficult problem since there were no off the shelf solutions.
+    </p>
+
+    <p>I started by testing FDM prints, however, due to the small pin size it was too difficult to create a reliable
+      print. The pins kept snapping and there was a lot of stringing between the pins that affected the electrodes
+      pushing through. I then tested an SLA resin print to be able to create the 1mm pins and it worked out great. There
+      was still some element of pin breaking, but it was minimal for the testing I needed to do. I also tried an SLS
+      style print to improve the flexibility and robustness of the product. These looked great, however, created some
+      issues when it came to spraying mentioned later.</p>
+
+    <p>To make the prints conductive, I got MG Chemicals Nickel and Carbon spray paints. After post-processing the 3D
+      prints, I sprayed the SLA resin and SLS prints with nickel and then carbon, leaving it 24 hours to cure. The SLA
+      resin prints worked great, with only a couple ohms resistance across the whole part, with a very reliable coating.
+      The SLS print did not perform well. Because of the grainy texture, the conductive paint did not make a good coat,
+      and the resistance was much higher (3k ohm to no conductive path for some pins). I decided to stick with an SLA
+      print until I come up with a urethane cast alternative.</p>
+    <div class="row">
+      <div class="col-md-6"> <img src="electrode1.JPG" alt=""></div>
+      <div class="col-md-6"> <img src="electrodes2.JPG" alt=""></div>
+      <div class="col-md-6"> <img src="electrodes3.JPG" alt=""></div>
+      <div class="col-md-6"> <img src="electrodes4.JPG" alt=""></div>
+    </div>
+
+    <h2>The Collar</h2>
+    <p>To hold the</p>
+
+    <h2>Muscle Stimulation Circuit</h2>
+    <p>I designed a muscle stimulation circuit (attached) using a H-bridge circuit to create the biphasic wave, and a
+      Texas Instruments (TI) boost convertor to control the high output voltage. This method worked very well. I first
+      tied using a current mirror approach so I could control the current going through the muscle but had a lot of
+      issues with this approach since it is highly inefficient. Instead, I’ll add a current feedback circuit so the MCU
+      can measure the current going through the muscle and adjust the output voltage (discrete implementation instead of
+      analogue).</p>
+
+    <h2>PCBs</h2>
+    <p>I had to create four different PCBs for the MVP. The first is a carrier board that held our nRF9160 Feather Board
+      that has comms and power management. It also connected the GPIOs to the other PCBs. The second PCB had a 12V boost
+      convertor and the third had a high voltage boost convertor for the muscle stimulation circuitry. The fourth board
+      is the H-Bridge controller for generating the biphasic waves.</p>
+
+    <p>I designed these PCB in Fusion 360 and had them manufactured with JLC PCB. I did the assembly myself using solder
+      paste for the surface mount components. The PCBs came together really well but are pretty bulky. I am current
+      working on two PCBs that hold all the components on them and connect over a flexible PCB connector. This will
+      significantly reduce the size of our case and give us options for what components we use.</p>
 
 
+    <div class="row">
+      <div class="col-md-6"> <img src="pcb1.JPG" alt=""></div>
+      <div class="col-md-6"> <img src="pcb2.JPG" alt=""></div>
+    </div>
 
-<h4>Assignment: Minimum Viable Product for Final Project</h4>
+    <h2>Casing of Device</h2>
+    <p>To house the device, I had to build a separate case that held the circuitry and connected it with the collar. I
+      also had to build plates the connected the electrodes to the collar and adjusted in the placement. I designed the
+      cases taking measurements of the PCB, cables and battery using a digital caliper, added some LEDs, and created the
+      slot that let us connect to the collar. It took a few goes to get the prints to house everything. They are still
+      pretty bulky but will be improved in a future version.</p>
 
 
-</div>
-</xmp>
+    <div class="row">
+      <div class="col-md-3"> <img src="case1.JPG" alt=""></div>
+      <div class="col-md-3"> <img src="case2.JPG" alt=""></div>
+      <div class="col-md-3"> <img src="case3.JPG" alt=""></div>
+      <div class="col-md-3"> <img src="3dprint1.JPG" alt=""></div>
+    </div>
+
+    <h2>Coding it All</h2>
+    <p>To be able to control the device over internet, I used the zephyr coding environment and AWS libraries to connect
+      to AWS IoT Core. I then used buttons on a simple react website to send commands to IoT Core which communicated
+      with the device over MQTT. This worked pretty well and the latency went down to under 1 second. This was good
+      enough for the first trial.</p>
+
+    <h2>Testing the Device</h2>
+    <p>The biggest part of the MVP – does it actually work? I found a farm that is only 40 minutes away who was happy
+      for me to come out with a friend and test the device on some dairy cows. Everything was tested online. We went to
+      the farm, and I put electrode gel on the cow to help with contact and removing ‘hot spots’ until I figure out a
+      more durable solution (working on materials now).</p>
+
+    <p>The trial worked almost perfectly! I put together a video of the trial below. The farmer mentioned, the muscle
+      stimulation worked better than her moving the cows. Although some of the sensations look pretty strong, all these
+      values we tested on ourselves and it feels ‘tactile’ rather than painful. Our low voltage system doesn’t engage
+      pain receptors but rather uses the muscles to control the cows. She was a very gentle cow and gave her a cuddle
+      after the trials :). </p>
+
+    <!-- i want to embed this google drive link https://drive.google.com/file/d/16OCS2O47dQDOvIg35eHpEzDNMlwbtM1l/view?usp=sharing -->
+
+    <div class="row">
+      <div class="col-md-12">
+        <iframe src="https://drive.google.com/file/d/16OCS2O47dQDOvIg35eHpEzDNMlwbtM1l/preview" width="1000"
+          height="480" allow="autoplay"></iframe>
+      </div>
+    </div>
+
+    <h2>Input/Output device</h2>
+    <p>Our device has many input and output devices. We have an IMU, digital magnometer, and adding current feedback
+      circuits. We also control LEDs to show device status, whilst having the muscle stimulator as our main output
+      device.</p>
+
+    <div class="row">
+      <div class="col-md-12"> <img src="input_output.JPG" alt=""></div>
+    </div>
+    <h2>Measuring Device Clocks</h2>
+    <p>Our device runs at 16MHz set period. I changed the periods on the device for the PWM elements that run at
+      customizable periods. I scoped these outputs at saw it running correctly. I then scoped the muscle stimulator
+      output before testing on myself and saw the outputs below.</p>
+    <div class="row">
+      <div class="col-md-6"> <img src="ems_oscope_1.JPG" alt=""></div>
+      <div class="col-md-6"> <img src="ems_oscope_2.JPG" alt=""></div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
 
 </html>
