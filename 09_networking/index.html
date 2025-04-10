@@ -1,48 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
+<head>
+  <title>PS70: Intro to Digital Fabrication - Week 9</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
 
+    .container {
+      max-width: 80%;
+      margin: auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-<nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">PS70 Fall 2024</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
+    img {
+      max-width: 100%;
+      max-height: 400px;
+      height: auto;
+      margin: 10px auto;
+      display: block;
+    }
+
+    pre {
+      background-color: #eaeaea;
+      padding: 15px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
 
 <body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin">   </p>
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid">
+      <h2 class="nav-title text-light">PS70 Fall 2024</h2>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link text-light" href="../index.html">Home</a>
+        <a class="nav-link text-light" href="../about.html">About</a>
+      </div>
+    </div>
+  </nav>
 
-<h3>Week 9: Radio, WiFi, Bluetooth (IoT)</h3>
+  <div class="container my-5">
+    <h1 class="text-center">Week 9: Radio, WiFi, Bluetooth (IoT)</h1>
 
+    <p>This week, the group project with Marcus focused on developing an IoT-based environmental sensing device to measure temperature, pressure, and humidity with bluetooth, with the goal to assess and maintain optimal sleeping conditions for a user. This involved integrating Bluetooth Low Energy (BLE) connected directly with a computer website and a Thingy53 board using the Bosch BME688 sensor.</p>
 
-<p class="margin">   </p>
-<div class="flexrow">
-  <a id="btn" href="wk9.zip" download>Download my files from this week!
-  </a>
-</div>
-<p class="margin">   </p>
+    <h2>Setting Up the Environment</h2>
+    <p>My setup involved configuring Zephyr OS, a platform to program the nRF53 MCU. It was particularly useful for enabling essential Bluetooth configurations, sensor functionalities, and controlling PWM for LEDs.</p>
 
-<h4>Assignment: [Program something with IOT]</h4>
+    <p>I first setup the project configuration file to enable the necessary features for the project and set the device name to "Thingy53".</p>
+    <pre>
+CONFIG_BT=y
+CONFIG_BT_PERIPHERAL=y
+CONFIG_BT_DEVICE_NAME="Thingy53"
+CONFIG_SENSOR=y
+CONFIG_PWM=y
+CONFIG_BME680=y
+CONFIG_IPC_SERVICE=y
+CONFIG_LED_PWM=y
+CONFIG_BOARD_ENABLE_CPUNET=y
+    </pre>
 
+    <h2>Sensor Integration and Data Acquisition</h2>
+    <p>I then integrated the BME688 sensor, which can provide accurate environmental data. The Zephyr-based code was stored in this (<code>main.c</code>) file, whichcontinuously reads the temperature, humidity, and pressure values as listed here:</p>
 
+    <pre>
+sensor_sample_fetch(bme);
+sensor_channel_get(bme, SENSOR_CHAN_AMBIENT_TEMP, &temperature);
+sensor_channel_get(bme, SENSOR_CHAN_HUMIDITY, &humidity);
+sensor_channel_get(bme, SENSOR_CHAN_PRESS, &pressure);
+    </pre>
 
+    <h2>Device Connectivity and BLE Comms</h2>
+    <p>The Thingy53 communicates over BLE, transmitting the environmental sensor data to our custom-built web interface. Below is the web interface used to display real-time sensor values:</p>
 
-</div>
-</xmp>
+    <img src="website_ble_connecting.png" alt="BLE Connection">
+    <p class="text-center"><em>Connecting to the Thingy53 via BLE.</em></p>
+
+    <h2>Real-time Data Display</h2>
+    <p>The web application visually shows the environmental metrics using these circles that changes colour according to the optimal temperature (16-20°C) and humidity (30-50%) ranges, providing immediate visual feedback on the current conditions.</p>
+
+    <img src="website_temp_values.png" alt="Environmental Metrics">
+    <p class="text-center"><em>Displaying real-time temperature, humidity, and air quality index.</em></p>
+
+    <h2>Hardware Integration and Testing</h2>
+    <p>I used PWM-driven RGB LEDs on the Thingy53 to indicate environmental conditions visually, going from blue (too cold), to green (optimal), and to red (too hot).</p>
+
+    <img src="nrf53_color.JPG" alt="RGB LED Indicator">
+    <p class="text-center"><em>RGB LED indicating environmental status.</em></p>
+
+    <p>The BLE and sensor data was extensively tested, both through the embedded device outputs and visually on the web application. Since it was battery powered, I could carry the device with me into different environments to test it properly. One issue we had was the temperature sensor seemed to be offset by a few degrees and was too warm. So in future I would look at calibrating the sensor more accurately.</p>
+
+    <img src="website_and_serial_output.JPG" alt="Serial and Web Output">
+    <p class="text-center"><em>Serial debugging output and website data display.</em></p>
+
+    <h2>Device Assembly and Practical Testing</h2>
+    <p>The fully assembled and operational Thingy53 ble device. I used my finger to test the temperature sensor fluctuations:</p>
+
+    <img src="nrf53_warming_up.JPG" alt="Assembled Device">
+    <p class="text-center"><em>Thingy53 device warming up and changing sensors.</em></p>
+
+    <h2>Wrap-up</h2>
+    <p>This week's group project was successful in creating an IoT system capable of monitoring and visualizing environmental data using bluetooth as our communication method. This application could be useful for ensuring optimal sleep conditions. Future improvements would be on the calibration of the temperature sensor and maybe the power consumption of the device?</p>
+
+    <!-- <div class="text-center my-4">
+      <a href="wk9.zip" class="btn btn-outline-dark">Download my files from this week!</a>
+    </div> -->
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>
+
