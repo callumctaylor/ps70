@@ -1,36 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
-
-
-<nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">PS70 Fall 2024</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
+<head>
+  <title>PS70 Final Project - Livestock EMS</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; }
+    .container { max-width: 80%; margin: auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+    h1, h2 { margin-top: 2rem; }
+    ul, li, p { text-align: left; }
+    code { background: #eee; padding: 2px 6px; border-radius: 4px; }
+    pre code { display: block; padding: 1em; background: #f4f4f4; border-radius: 5px; overflow-x: auto; }
+    iframe { width: 100%; height: 480px; margin-top: 1rem; }
+    img { max-width: 100%; height: auto; margin-top: 1rem; border-radius: 8px; }
+  </style>
+</head>
 
 <body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin"></p>
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid">
+      <h2 class="nav-title text-light">PS70 Final Project</h2>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link text-light" href="../index.html">Home</a>
+        <a class="nav-link text-light" href="../about.html">About</a>
+      </div>
+    </div>
+  </nav>
 
-<h3>Final Project: [INSERT FINAL PROJECT HERE]</h3>
+  <div class="container my-5">
+    <h1>Final Project: Livestock Muscle Stimulation System (AgX Sentinel EMS)</h1>
 
+    <h2>Demo Video</h2>
+    <iframe src="https://drive.google.com/file/d/1P9LT3aom56vEjf-wG7ktu7NKYs37nDD4/preview" allow="autoplay"></iframe>
+    <p>This video demonstrates the EMS system in action on livestock. You can observe muscle contractions, LED indicators, and how the device interfaces with the animal—all powered by the custom control firmware and dry electrodes.</p>
 
-</div>
-</xmp>
+    <h2>Project Overview</h2>
+    <p>This project is a wearable muscle stimulation system for livestock, built to integrate with virtual fencing systems. It avoids the downsides of traditional gel electrodes by using flexible, casted “dry” electrodes. Key features include:</p>
+    <ul>
+      <li>Custom EMS firmware on a Nordic nRF9151</li>
+      <li>Dry electrodes cast using alternative conductive materials</li>
+      <li>Durable TPU housing to mount around livestock</li>
+      <li>Wireless cellular integration for remote control</li>
+    </ul>
+
+    <h2>Motivation</h2>
+    <p>The idea behind this project came from the need for a better, more humane way to manage livestock movement. Inspired by both my family's agricultural background and my work in AgTech, I wanted to explore physical cues that didn’t rely on painful shocks or inconsistent auditory signals. The EMS system represents a novel, controlled, and gentle feedback mechanism for modern farms.</p>
+
+    <h2>System Components</h2>
+
+    <h3>1. Custom EMS Controller (Firmware + Hardware)</h3>
+    <p>This module contains the core intelligence of the system. It interfaces directly with the electrodes, manages stimulation patterns, and controls voltage and timing through Zephyr-based firmware. The board was custom-designed for the application, allowing low-level access to Nordic hardware peripherals.</p>
+
+    <h4>Firmware Overview</h4>
+    <p>The EMS driver is built on Zephyr RTOS for the nRF9151. It handles waveform generation, PWM control, boost converter switching, channel toggling, and safety timers. All logic is executed through hardware-level interrupts and peripherals to ensure responsiveness and timing precision.</p>
+
+    <h4>Key Features</h4>
+    <ul>
+      <li><strong>H-Bridge Waveform Control:</strong> Alternating polarity pulses via PWM and hardware timers.</li>
+      <li><strong>Analog Amplitude Modulation:</strong> Filtered PWM output scales intensity from 0–60V.</li>
+      <li><strong>Channel Switching:</strong> GPIO-based selection between left/right electrodes.</li>
+      <li><strong>Auto-Off Timer:</strong> Independent duration timer ensures safe shutdown.</li>
+    </ul>
+    <img src="ems_waveform_oscope.JPG" alt="EMS waveform oscilloscope">
+    <img src="ems_board_closeup.JPG" alt="Close-up of EMS board">
+
+    <h3>2. PCB Design: AgMuster Boards</h3>
+    <p>To support all necessary functions, I developed a custom PCB around the Nordic nRF9151. It includes dual H-bridge drivers, analog voltage control, and high-voltage boost converters. Designed in Fusion 360, it serves as the central hub for signal routing and control.</p>
+    <ul>
+      <li>Built around Nordic nRF9151 MCU</li>
+      <li>Custom schematic with boost converters + dual EMS channels</li>
+      <li>Designed in Fusion 360</li>
+      <li><a href="https://drive.google.com/drive/folders/19n20PrWWG_x7DRSMkPspTNH7TvzrDdGP?usp=sharing">Download design files</a></li>
+    </ul>
+    <img src="cow_electronics_unit_v1.JPG" alt="PCB Assembly">
+
+    <h3>3. Electrode Development</h3>
+    <p>Unlike standard gel electrodes, these dry electrodes were custom-designed to work through animal hair and still deliver effective stimulation. I tested a variety of materials and forms before landing on a glycerol-based agarose gel housed in a 3D-printed TPU mold.</p>
+    <ul>
+      <li>SLA-printed molds from Fusion 360</li>
+      <li>Tested multiple materials: glycerol+choline chloride, graphene-polyurethane, and agarose blends</li>
+      <li>Final: Agarose-based dry gel electrode mounted in flexible TPU</li>
+      <li><a href="https://drive.google.com/file/d/17EDPzCmlw4sEZRHKaiBlaXAj_lNI119f/view?usp=sharing">Download STL of mold</a></li>
+    </ul>
+    <div class="row">
+      <div class="col-md-4"> <img src="graphene_electrode_testing_bench.JPG" alt="Electrode Bench Test"> </div>
+      <div class="col-md-4"> <img src="electrode_stripped.JPG" alt="Electrode Stripped"> </div>
+      <div class="col-md-4"> <img src="electrodes_potted.jpg" alt="Electrodes Potted"> </div>
+    </div>
+
+    <h3>4. Enclosure Design</h3>
+    <p>The enclosure needed to be weather-resistant, flexible, and animal-safe. Using TPU, I iterated through multiple versions to achieve a tight, comfortable fit around the cow's neck while accommodating the electronics and electrodes securely.</p>
+    <ul>
+      <li>TPU enclosure to withstand animal movement</li>
+      <li>Mounted PCBs, battery, and solar input</li>
+      <li>3 design iterations, finalized for flexibility and resilience</li>
+    </ul>
+    <div class="row">
+      <div class="col-md-4"> <img src="case_design_v2.JPG" alt="Enclosure Design v2"> </div>
+      <div class="col-md-4"> <img src="case_design_v3.jpeg" alt="Enclosure Design v3"> </div>
+      <div class="col-md-4"> <img src="cow_flex_rigid_collar_variant.jpeg" alt="Collar Variant"> </div>
+    </div>
+
+    <h2>Fabrication Process</h2>
+    <p>This project involved a wide range of fabrication tools and methods—from 3D printing and SLA casting to PCB soldering and field testing. Rapid prototyping allowed me to test and iterate on designs quickly, improving each component with every version.</p>
+    <ul>
+      <li>SLA + FDM printing for molds and enclosures</li>
+      <li>PCB reflow soldering + hand assembly</li>
+      <li>Field testing with live cattle</li>
+    </ul>
+    <div class="row">
+      <div class="col-md-4"> <img src="pcb_mag.JPG" alt="Controller Lab Setup"> </div>
+      <div class="col-md-4"> <img src="materials_on_lab.JPG" alt="Cow Electronics Unit"> </div>
+      <div class="col-md-4"> <img src="farm_test.png" alt="On-field Photo"> </div>
+    </div>
+
+    <h2>Lessons Learned</h2>
+    <p>This project taught me a lot about system integration, rapid iteration, and the tradeoffs between electrical performance and real-world usability. Balancing flexibility, conductivity, and durability proved especially challenging.</p>
+    <ul>
+      <li>Dry electrode development is hard—biocompatibility vs conductivity is a tradeoff</li>
+      <li>SLA printing is invaluable for small, high-precision parts</li>
+      <li>Zephyr RTOS has great peripheral control but a steep learning curve</li>
+      <li>Precise hardware alignment is critical for electro-mechanical systems</li>
+    </ul>
+
+    <h2>Future Work</h2>
+    <p>I plan to expand the system with wireless BLE support, cloud-based dashboards, and contract manufacturing for real-world deployments. Further research will focus on user configurability and longer-term field trials.</p>
+    <ul>
+      <li>Add BLE for ranch-side setup and debugging</li>
+      <li>Web dashboard for triggering patterns based on paddock info</li>
+      <li>Contract manufacturing and ruggedization</li>
+      <li>Extended animal trials for comfort and performance</li>
+    </ul>
+
+    <h2>Credits</h2>
+    <p>Special thanks to Nathan, Bobby, Kassia, and the entire PS70 team for their guidance and support!</p>
+
+    <h2>Files + Resources</h2>
+    <p>All design files, schematics, and firmware snippets used throughout the project are linked below for reference or remixing.</p>
+    <ul>
+      <li>🖼️ Electrode Mold STL: <a href="https://drive.google.com/file/d/17EDPzCmlw4sEZRHKaiBlaXAj_lNI119f/view?usp=sharing">View STL</a></li>
+      <li>📐 Fusion 360 Models</li>
+      <li>🔗 <a href="https://drive.google.com/drive/folders/19n20PrWWG_x7DRSMkPspTNH7TvzrDdGP?usp=sharing">Schematic & PCB</a></li>
+      <li>📎 BOM: <a href="https://drive.google.com/file/d/1cAMBn84hthln_2e85Rk6FHirOifByM62/view?usp=sharing">Download BOM</a></li>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
 
 </html>
