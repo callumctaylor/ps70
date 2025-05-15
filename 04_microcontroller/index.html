@@ -1,41 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<title>PS70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../style.css" rel="stylesheet">
+<head>
+  <title>PS70: Week 5 - EMS Controller</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+  <style>
+    .hover-effect {
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
 
+    .hover-effect:hover {
+      transform: scale(1.05);
+    }
 
-<nav class="navbar navbar-expand-sm navbar-dark" style=" color: #EEE7E8;">
-  <div style="align-items: center; justify-content: center;" class="container-fluid">
-    <div class="flexrow">
-      <h2 class="nav-title">PS70 Fall 2024</h2>
-    </div>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-    </div>
-  </div>
-</nav>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .btn-outline-dark:hover {
+      background-color: #343a40;
+      color: #fff;
+    }
+
+    p {
+      text-align: left;
+    }
+
+    .container {
+      max-width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 400px;
+      height: auto;
+      display: block;
+      margin: 10px auto;
+    }
+  </style>
+</head>
 
 <body>
-<xmp style="display:none;">
-<div class="textcontainer">
-<p class="margin">   </p>
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid">
+      <h2 class="nav-title text-light">PS70 Fall 2024</h2>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link text-light" href="../index.html">Home</a>
+        <a class="nav-link text-light" href="../about.html">About</a>
+        <a class="nav-link text-light" href="../13_finalproject/index.html">Final Project</a>
+      </div>
+    </div>
+  </nav>
 
-<h3>Week 4: Microcontroller Programming</h3>
+  <div class="container text-center my-5">
+    <h1>Week 5: Programming a Custom Arduino-Based Muscle Stimulator</h1>
 
-<h4>[Do Something with an arduino]</h4>
+    <p>For this week’s assignment, I programmed a custom Nordic nRF9151 microcontroller that I designed and built as part of the muscle stimulation system for livestock monitoring and virtual fencing.</p>
 
+    <p>This project builds on action items for my final project: developing the firmware to control our muscle stimulation devices. The goal was to implement a programmable EMS driver that can receive commands to vary stimulation parameters like pulse width, frequency, intensity, and duration.</p>
 
+    <h2>What I Made It Do</h2>
+    <p>The firmware enables precise control over EMS pulses through a custom API interface. Here's a breakdown of what the code I made can do:</p>
+    <ul class="text-start">
+      <li>Waveform generation via PWM for two output channels (left and right muscle electrodes).</li>
+      <li>Analog voltage modulation through PWM to control the stimulation intensity.</li>
+      <li>Automatic safety shutoff using timers and DPPI when stimulation duration ends.</li>
+      <li>Control of high-voltage boost circuits that step up to our desired 60V output.</li>
+      <li>Seamless integration with our EMS schematic hardware, using GPIO-controlled H-bridges for switching waveform polarity.</li>
+    </ul>
 
+    <p>I now have full programmable control of the EMS system directly from the NRF MCU using a mix of timers, hardware PWM, and GPIO switching.</p>
 
+    <h2>Code Snippet (Core Function)</h2>
+    <pre class="text-start" style="background:#f1f1f1; padding:10px; border-radius:6px;">
+int ems_controller_waveform_start(const struct device *dev, int freq_hz, int pulse_width_us,
+                                  int duration_us)
+{
+    boost_converters_on(config);
+    hb_pwm_start(config, freq_hz, pulse_width_us, duration_us);
+    return 0;
+}
+    </pre>
+    <p>This function is the entry point for triggering EMS pulses. It turns on the power converters, then configures PWM sequences to fire alternating pulses to both electrode channels.</p>
 
-</div>
-</xmp>
+    <h2>Schematic Overview</h2>
+    <p>The full schematic is quite dense since it's a custom board (AgMuster B2). But the core EMS system includes:</p>
+    <ul class="text-start">
+      <li>IRS2304 half-bridge drivers controlling each channel (left/right).</li>
+      <li>High-voltage boost converters driven from a 3.7V LiPo to generate the ~60V stimulus.</li>
+      <li>Analog voltage control for intensity using a dedicated PWM pin filtered through a low-pass RC circuit.</li>
+    </ul>
+
+    <img src="schematic_snippet.jpg" alt="EMS schematic section" class="hover-effect">
+
+    <h2>What I Learned</h2>
+    <p>This week was a deep dive into Zephyr's low-level peripheral control. I learned how to:</p>
+    <ul class="text-start">
+      <li>Set up custom PWM sequences using <code>nrfx_pwm</code>.</li>
+      <li>Use hardware timers and DPPI channels to trigger events autonomously.</li>
+      <li>Configure GPIO-driven analog voltage scaling using PWM duty cycles.</li>
+      <li>Integrate hardware shutdown logic via timers for EMS safety.</li>
+    </ul>
+    <p>Additionally, I had to debug some tricky interactions between multiple peripherals, such as overlapping timer interrupts and ensuring the PWM doesn’t get stuck in a "high" state after stop commands.</p>
+
+    <h2>Demo Video</h2>
+    <video controls width="100%" style="max-width:600px;" class="my-3 hover-effect">
+      <source src="ems_demo_video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <p>In the demo, you can see the device create muscle-tapping sensations! In the future, I want to have a web platform that lets me control it and pre-program different sensations.</p>
+
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <img src="ems_waveform_packet.JPG" alt="Packet of EMS wave bursts" class="hover-effect">
+      </div>
+      <div class="col-md-6">
+        <img src="ems_board_closeup.jpg" alt="What I'm actually feeling" class="hover-effect">
+      </div>
+    </div>
+
+    <h2>Next Steps</h2>
+    <p>Looking ahead, I'll work on expanding the waveform control library, developing a wireless command interface, and integrating this into the full livestock wearable system.</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="../strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
 
 </html>
